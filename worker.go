@@ -3,6 +3,11 @@
 // time: 2019-05-06 18:40
 package xiao_tunny
 
+import (
+	"fmt"
+	"github.com/githubao/xiao-gogo/gls"
+)
+
 // 代表一个独立的单一请求
 type workerRequest struct {
 	// 往里面放要运行的任务的参数数据
@@ -80,6 +85,8 @@ func (w *workerWrapper) run() {
 			// 工作流里面可以拿到单条的请求数据
 			case payload := <-jobChan:
 				// 调用函数获取结果
+				fmt.Printf("goroutine(%d) process the job: %v\n",
+					gls.GetGoid(), payload)
 				result := w.worker.Process(payload)
 				select {
 				// 写返回的数据的结果
