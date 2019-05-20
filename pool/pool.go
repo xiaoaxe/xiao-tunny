@@ -3,6 +3,11 @@
 // time: 2019-05-19 20:37
 package pool
 
+import (
+	"fmt"
+	"time"
+)
+
 const num = 10000
 
 type Pool struct {
@@ -28,6 +33,18 @@ func NewPool(poolSize int) *Pool {
 
 func (p *Pool) Submit(f Runnable) {
 	p.jobChan <- f
+}
+
+func (p *Pool) Wait() {
+	close(p.jobChan)
+	for {
+		if len(p.jobChan) == 0 {
+			return
+		}
+		fmt.Printf("chan len: %v\n", len(p.jobChan))
+
+		time.Sleep(time.Millisecond * 100)
+	}
 }
 
 func (p *Pool) Close() {

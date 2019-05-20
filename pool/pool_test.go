@@ -11,7 +11,7 @@ import (
 )
 
 func TestPool(t *testing.T) {
-	start := time.Now()
+	//start := time.Now()
 
 	pool := NewPool(5)
 
@@ -19,16 +19,18 @@ func TestPool(t *testing.T) {
 		fmt.Printf("gid:%d, current: %d\n", gls.GetGoid(), time.Now().UnixNano())
 	}
 
-	for i := 0; i <= 100; i++ {
+	for i := 0; i <= 100000; i++ {
 		pool.Submit(f)
 	}
 
-	for {
-		if time.Since(start) > 5*time.Second {
-			break
-		}
+	//for {
+	//	if time.Since(start) > 5*time.Second {
+	//		break
+	//	}
+	//
+	//}
 
-	}
+	pool.Wait()
 
 	fmt.Println("exit pool")
 }
